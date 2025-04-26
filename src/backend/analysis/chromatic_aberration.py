@@ -4,12 +4,16 @@ import numpy as np
 import os
 
 class ChromaticAberrationAnalyzer(BaseAnalyzer):
-    """Analyzes chromatic aberration patterns in images."""
+    """
+    Analyzes potential chromatic aberration by measuring differences
+    in edge gradients across color channels.
+    Note: This is an approximation and its effectiveness for deepfake
+    detection may be limited.
+    """
 
     def analyze(self, file_path: str) -> dict:
         """
-        Performs chromatic aberration analysis on an image.
-        Placeholder implementation.
+        Performs analysis based on color channel gradient differences at edges.
 
         Args:
             file_path: Path to the image file.
@@ -24,26 +28,68 @@ class ChromaticAberrationAnalyzer(BaseAnalyzer):
             if img is None:
                 return {"error": f"Could not read image: {file_path}"}
 
-            # Placeholder: Calculate color channel differences along edges
-            # A real implementation would be more sophisticated (e.g., edge detection,
-            # analyzing color shifts perpendicular to edges).
-            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            edges = cv2.Canny(gray, 100, 200) # Detect edges
+            # Ensure image is 3-channel color
+            if len(img.shape) != 3 or img.shape[2] != 3:
+                return {"error": "Image is not a 3-channel color image."}
 
-            # Calculate average color difference in edge regions
-            b, g, r = cv2.split(img)
-            diff_rg = np.mean(np.abs(r[edges > 0].astype(np.int16) - g[edges > 0].astype(np.int16))) if np.any(edges) else 0
-            diff_gb = np.mean(np.abs(g[edges > 0].astype(np.int16) - b[edges > 0].astype(np.int16))) if np.any(edges) else 0
+            # --- More Sophisticated Analysis ---
+            # 1. Calculate gradients for each color channel
+            # Use Scharr operator for potentially higher accuracy than Sobel 3x3
+            grad_x_b = cv2.Scharr(img[:,:,0], cv2.CV_64F, 1, 0)
+            grad_y_b = cv2.Scharr(img[:,:,0], cv2.CV_64F, 0, 1)
+            grad_x_g = cv2.Scharr(img[:,:,1], cv2.CV_64F, 1, 0)
+            grad_y_g = cv2.Scharr(img[:,:,1], cv2.CV_64F, 0, 1)
+            grad_x_r = cv2.Scharr(img[:,:,2], cv2.CV_64F, 1, 0)
+            grad_y_r = cv2.Scharr(img[:,:,2], cv2.CV_64F, 0, 1)
 
-            avg_diff = (diff_rg + diff_gb) / 2
+            # 2. Calculate gradient magnitude for each channel
+            mag_b = cv2.magnitude(grad_x_b, grad_y_b)
+            mag_g = cv2.magnitude(grad_x_g, grad_y_g)
+            mag_r = cv2.magnitude(grad_x_r, grad_y_r)
+
+            # 3. Identify strong edge regions (using Green channel magnitude as reference)
+            # Normalize green magnitude for thresholding
+            mag_g_norm = cv2.normalize(mag_g, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+            # Use Otsu's threshold to automatically find a threshold for strong edges
+            _, edge_mask = cv2.threshold(mag_g_norm, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+            # 4. Calculate average magnitude difference in edge regions
+            num_edge_pixels = np.count_nonzero(edge_mask)
+
+            if num_edge_pixels > 0:
+                # Calculate mean absolute difference between channel magnitudes at edges
+                diff_rg_mag = np.mean(np.abs(mag_r[edge_mask > 0] - mag_g[edge_mask > 0]))
+                diff_gb_mag = np.mean(np.abs(mag_g[edge_mask > 0] - mag_b[edge_mask > 0]))
+                diff_rb_mag = np.mean(np.abs(mag_r[edge_mask > 0] - mag_b[edge_mask > 0]))
+                avg_mag_diff = (diff_rg_mag + diff_gb_mag + diff_rb_mag) / 3
+            else:
+                diff_rg_mag = 0
+                diff_gb_mag = 0
+                diff_rb_mag = 0
+                avg_mag_diff = 0
+
+            # --- Results ---
+            # Define a heuristic threshold - this is highly empirical and may need tuning
+            # A higher difference *might* indicate inconsistencies, but could also be
+            # strong natural CA or other image features.
+            # Let's use a relative threshold based on average green magnitude at edges
+            avg_g_mag_at_edges = np.mean(mag_g[edge_mask > 0]) if num_edge_pixels > 0 else 0
+            # Potential issue if average difference is > 10% of average green magnitude? (Very arbitrary)
+            threshold_factor = 0.10
+            potential_issue = (avg_mag_diff > (avg_g_mag_at_edges * threshold_factor)) if avg_g_mag_at_edges > 0 else False
 
             return {
-                "analyzer": "Chromatic Aberration",
+                "analyzer": "Chromatic Aberration (Gradient Diff)",
                 "file": file_path,
-                "average_edge_color_difference": round(avg_diff, 2),
-                # Simple heuristic: higher difference might indicate manipulation
-                "potential_aberration": avg_diff > 5.0 # Arbitrary threshold
+                "mean_abs_diff_rg_magnitude_at_edges": round(diff_rg_mag, 4),
+                "mean_abs_diff_gb_magnitude_at_edges": round(diff_gb_mag, 4),
+                "mean_abs_diff_rb_magnitude_at_edges": round(diff_rb_mag, 4),
+                "average_magnitude_difference_at_edges": round(avg_mag_diff, 4),
+                "potential_issue_heuristic": potential_issue,
+                "details": f"Analysis based on {num_edge_pixels} edge pixels identified via Otsu threshold on Green channel Scharr magnitude."
             }
         except Exception as e:
-            return {"error": f"Chromatic Aberration analysis failed: {e}"}
+            # Log the exception for debugging
+            # print(f"Error during Chromatic Aberration analysis for {file_path}: {e}")
+            return {"error": f"Chromatic Aberration analysis failed: {str(e)}"}
 
