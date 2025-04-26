@@ -1,2 +1,8 @@
 data/Dataset/
 *.pyc
+*.h5
+
+*.keras
+*.weights
+*.hdf5
+*.zip
