@@ -1,0 +1,17 @@
+Audio
+
+https://huggingface.co/MelodyMachine/Deepfake-audio-detection-V2
+https://huggingface.co/Gustking/wav2vec2-large-xlsr-deepfake-audio-classification
+
+
+Image
+
+https://huggingface.co/Wvolf/ViT_Deepfake_Detection
+https://huggingface.co/dima806/deepfake_vs_real_image_detection
+
+
+Video
+
+https://huggingface.co/shylhy/videomae-large-finetuned-deepfake-subset
+https://huggingface.co/Ammar2k/videomae-base-finetuned-deepfake-subset
+https://huggingface.co/Yashexe/Deep_fake_detection-Xception
