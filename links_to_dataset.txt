@@ -1,0 +1,11 @@
+Audio datasets
+
+https://www.kaggle.com/datasets/elin75/localized-audio-visual-deepfake-dataset-lav-df
+
+Video datatasets
+
+https://paperswithcode.com/dataset/deepfake-mnist
+
+Image datasets
+
+https://www.kaggle.com/datasets/reubensuju/celeb-df-v2
