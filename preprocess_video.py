@@ -95,7 +95,7 @@ X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_st
 
 with tf.device(DEVICE):
     model = create_finetuned_efficientnetb7_model()
-    model.load_weights("deepfake_detector.keras")
+    model.load_weights("efficientnetb7_deepfake_finetuned.keras")
 
     val_datagen = ImageDataGenerator(rescale=1.0 / 255)
     val_generator = val_datagen.flow(X_val, y_val, batch_size=16, shuffle=False)
