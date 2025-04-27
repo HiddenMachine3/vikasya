@@ -5,7 +5,7 @@ from backend.analysis.chromatic_aberration import ChromaticAberrationAnalyzer
 from backend.analysis.ela import ELAAnalyzer
 from backend.analysis.fractal_density import FractalDensityAnalyzer
 from backend.analysis.video_analysis import VideoAnalyzer
-
+from backend.analysis.deep_image_analyzer import DeepImageAnalyzer
 
 class MediaAnalyzerService:
     """Orchestrates different media analysis techniques."""
@@ -15,6 +15,7 @@ class MediaAnalyzerService:
             FractalDensityAnalyzer(),
             ELAAnalyzer(),
             ChromaticAberrationAnalyzer(),
+            DeepImageAnalyzer(),
         ]
         self.video_analyzers = [
             VideoAnalyzer(),

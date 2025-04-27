@@ -1,7 +1,8 @@
 import tensorflow as tf
 
-model_name = "final_model"  # or .keras or SavedModel
-tf_lite_model_name = "best_model"  # or .keras or SavedModel
+model_name = "models/best_model_image_analysis_84_val_acc"  # or .keras or SavedModel
+
+tf_lite_model_name = "models/best_model_image_analysis_84_val_acc"  # or .keras or SavedModel
 
 # Load your Keras model
 model = tf.keras.models.load_model(f"{model_name}.keras")  # or .keras or SavedModel
@@ -18,3 +19,4 @@ tflite_model = converter.convert()
 # Save the TFLite model
 with open(f"{tf_lite_model_name}.tflite", "wb") as f:
     f.write(tflite_model)
+print("Saved model!")
