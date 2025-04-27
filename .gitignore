@@ -1,6 +1,8 @@
 data/Dataset/
-*.pyc
+**/*.pyc
 *.h5
+
+**/__pycache__/
 
 *.keras
 *.weights
@@ -10,8 +12,6 @@ data/
 *.wav
 *.mp4
 *.webp
-*.png
 *.jpg
-
 
 AUDIO_DATASET/
