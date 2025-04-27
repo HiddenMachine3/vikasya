@@ -2,6 +2,8 @@ import os
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
+import shutil
+
 import librosa
 import numpy as np
 import soundfile as sf
@@ -15,6 +17,7 @@ AUDIO_DIR = os.path.join(os.getcwd(), "AUDIO_DATASET")
 REAL_DIR = os.path.join(AUDIO_DIR, "real_wav")
 FAKE_DIR = os.path.join(AUDIO_DIR, "fake_wav")
 TFLITE_MODEL_PATH = "best_model_12.46_89_test.tflite"  # Path to your TFLite model
+custom_location = os.path.join(AUDIO_DIR, "audio_test_files")
 
 
 def load_data():
@@ -34,6 +37,23 @@ def load_data():
     val_files, test_files, val_labels, test_labels = train_test_split(
         temp_files, temp_labels, test_size=0.33, random_state=42, shuffle=True
     )
+
+    # Create subdirectories for real and fake
+    real_dir = os.path.join(custom_location, "real")
+    fake_dir = os.path.join(custom_location, "fake")
+
+    if not os.path.exists(real_dir):
+        os.makedirs(real_dir)
+    if not os.path.exists(fake_dir):
+        os.makedirs(fake_dir)
+
+    # Copy test files to the respective directories
+    for i, test_file in enumerate(test_files):
+        # Determine the target directory based on label
+        target_dir = real_dir if test_labels[i] == 0 else fake_dir
+
+        # Copy the file to the appropriate subdirectory
+        shutil.copy(test_file, os.path.join(target_dir, os.path.basename(test_file)))
 
     return test_files, test_labels
 
@@ -97,6 +117,8 @@ def run_tflite_inference(tflite_model_path, test_files, test_labels):
 
         except Exception as e:
             print(f"Error processing file {file}: {e}")
+
+    # print(test_preds)   # 0 == REAL   1 == FAKE
 
     acc = accuracy_score(true_labels, test_preds)
     f1 = f1_score(true_labels, test_preds)

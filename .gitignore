@@ -5,7 +5,6 @@ data/Dataset/
 *.keras
 *.weights
 *.hdf5
-*.zip
 
 data/
 *.wav
