@@ -14,8 +14,8 @@ This project provides tools to analyze media files (images, videos, and audio) f
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repository-url>
-    cd <repository-directory>
+    git clone (https://github.com/HiddenMachine3/vikasya)
+    cd (https://github.com/HiddenMachine3/vikasya)
     ```
 
 2.  **Create and activate a virtual environment (recommended):**
@@ -74,17 +74,6 @@ This project provides tools to analyze media files (images, videos, and audio) f
 
 ## How to Use
 
-### CLI Version
-
-1.  When you run the application using `python src/main.py`, you will see the welcome message: `--- Media Authenticity Verification CLI ---`
-2.  The application will then prompt you: `Enter the path to the media file (or type 'quit' to exit):`
-3.  Provide the complete path to the image, video, or audio file you want to analyze and press Enter.
-    *   Supported image types include `.jpg`, `.jpeg`, `.png`, `.bmp`, `.tiff`.
-    *   Supported video types include `.mp4`, `.avi`, `.mov`, `.mkv`.
-    *   Supported audio types include `.wav`, `.mp3`.
-4.  The tool will process the file using the available analyzers and display the results for each one.
-5.  To stop the application, type `quit` at the prompt and press Enter.
-
 ### Flutter App
 
 1.  Launch the app on your device or emulator.
@@ -96,8 +85,6 @@ This project provides tools to analyze media files (images, videos, and audio) f
     *   Fractal Density Analysis (Placeholder)
     *   Error Level Analysis (ELA) (Basic Implementation)
     *   Chromatic Aberration Detection (Placeholder)
-*   **Video Analysis:**
-    *   Basic Frame/Duration Info & Heuristics (Placeholder)
 *   **Audio Analysis:**
     *   Basic audio spectrum analysis (using FFT)
     *   WAV file processing
