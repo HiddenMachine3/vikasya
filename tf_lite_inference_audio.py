@@ -61,6 +61,10 @@ def load_data():
 def preprocess_audio(filepath, sample_rate=16000):
     y, sr = sf.read(filepath)
 
+    print("Before preprocessing")
+    print(y)
+    print(y.shape)
+
     if sr != sample_rate:
         y = librosa.resample(y=y, orig_sr=sr, target_sr=sample_rate)
 
@@ -84,6 +88,10 @@ def preprocess_audio(filepath, sample_rate=16000):
     else:
         log_mel_spectrogram = log_mel_spectrogram[:, :n_frames]
 
+    print("After preprocessing")
+    print(log_mel_spectrogram)
+    print(log_mel_spectrogram.shape)
+    exit()
     return log_mel_spectrogram
 
 
