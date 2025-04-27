@@ -14,8 +14,8 @@ This project provides tools to analyze media files (images, videos, and audio) f
 
 1.  **Clone the repository:**
     ```bash
-    git clone (https://github.com/HiddenMachine3/vikasya)
-    cd (https://github.com/HiddenMachine3/vikasya)
+    git clone https://github.com/HiddenMachine3/vikasya
+    cd https://github.com/HiddenMachine3/vikasya
     ```
 
 2.  **Create and activate a virtual environment (recommended):**
