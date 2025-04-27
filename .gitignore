@@ -15,3 +15,5 @@ data/
 *.jpg
 
 AUDIO_DATASET/
+
+DFD_sampled/
