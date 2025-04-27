@@ -53,6 +53,8 @@ class StreamlitFrontend(BaseFrontend):
                 st.image(temp_file_path, caption="Uploaded Image")
             elif file_type in ['.mp4', '.avi', '.mov']:
                 st.video(temp_file_path)
+            elif file_type in ['.wav', '.flac', '.mp3']:
+                st.audio(temp_file_path)
             else:
                 st.warning("Unsupported file type for preview.")
 
