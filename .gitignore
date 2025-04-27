@@ -6,3 +6,13 @@ data/Dataset/
 *.weights
 *.hdf5
 *.zip
+
+data/
+*.wav
+*.mp4
+*.webp
+*.png
+*.jpg
+
+
+AUDIO_DATASET/

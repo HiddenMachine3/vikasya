@@ -15,3 +15,12 @@ Video
 https://huggingface.co/shylhy/videomae-large-finetuned-deepfake-subset
 https://huggingface.co/Ammar2k/videomae-base-finetuned-deepfake-subset
 https://huggingface.co/Yashexe/Deep_fake_detection-Xception
+
+
+
+
+Datasets
+
+Audio
+
+https://www.kaggle.com/datasets/abdallamohamed312/in-the-wild-audio-deepfake
