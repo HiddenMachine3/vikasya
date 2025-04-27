@@ -48,7 +48,7 @@ This project provides tools to analyze media files (images, videos, and audio) f
 
 ## Running the Application
 
-### CLI Version
+### Server
 
 1.  **Activate the virtual environment** (if you created one):
     ```bash
@@ -59,7 +59,7 @@ This project provides tools to analyze media files (images, videos, and audio) f
 
 3.  **Run the main script:**
     ```bash
-    python src/main.py
+     python src/main.py --frontend api --port 9000
     ```
 
 ### Flutter App
